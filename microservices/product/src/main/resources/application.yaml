@@ -1,0 +1,15 @@
+
+server:
+  port: 7001
+
+logging:
+  level:
+    root: INFO
+    br.com.microservices.core.product: DEBUG
+
+---
+spring:
+  profiles:
+    - docker
+server:
+  port: 8080
