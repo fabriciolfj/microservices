@@ -1,29 +1,4 @@
 
-.gradle/*
-.gradle/6.2.2/fileChanges/
+.gradle/
 
-.gradle/6.2.2/fileContent/
-
-.gradle/6.2.2/fileHashes/
-
-.gradle/6.2.2/gc.properties
-
-.idea/sonarlint/issuestore/8/e/
-
-.idea/sonarlint/issuestore/b/a/
-
-.idea/sonarlint/issuestore/
-
-.idea/modules/microservices/composite.product/
-
-.idea/modules/microservices/product/microservices.microservices.product.iml
-
-.idea/modules/microservices/product/microservices.microservices.product.main.iml
-
-.idea/modules/microservices/recommendation/microservices.microservices.recommendation.iml
-
-.idea/modules/microservices/recommendation/microservices.microservices.recommendation.main.iml
-
-.idea/modules/microservices/review/microservices.microservices.review.iml
-
-.idea/modules/microservices/review/microservices.microservices.review.main.iml
+.idea/
