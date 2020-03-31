@@ -1,6 +1,5 @@
 
-.gradle/6.2.2/executionHistory/
-
+.gradle/*
 .gradle/6.2.2/fileChanges/
 
 .gradle/6.2.2/fileContent/
