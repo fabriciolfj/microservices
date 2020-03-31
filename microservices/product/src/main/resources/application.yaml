@@ -7,6 +7,11 @@ logging:
     root: INFO
     br.com.microservices.core.product: DEBUG
 
+management:
+  endpoint:
+    health:
+      mongodb: false
+
 ---
 spring:
   profiles:

@@ -47,6 +47,7 @@ dependencies {
 	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.4.0'
 	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.4.0'
 	testImplementation 'io.projectreactor:reactor-test'
+	testImplementation group: 'de.flapdoodle.embed', name: 'de.flapdoodle.embed.mongo', version: '2.2.0'
 }
 
 test {

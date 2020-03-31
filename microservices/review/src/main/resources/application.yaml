@@ -1,5 +1,14 @@
 server.port: 7003
 
+spring.jpa.hibernate.ddl-auto: update
+
+spring.datasource:
+  url: jdbc:mysql://localhost/review-db
+  username: user
+  password: pwd
+
+spring.datasource.hikari.initializationFailTimeout: 60000
+
 logging:
   level:
     root: INFO
@@ -9,5 +18,9 @@ logging:
 spring:
   profiles:
     - docker
+
+spring.datasource:
+  url: jdbc:mysql://mysql/review-db
+
 server:
   port: 8080
