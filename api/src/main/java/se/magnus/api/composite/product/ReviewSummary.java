@@ -15,7 +15,7 @@ public class ReviewSummary {
     }
 
     public ReviewSummary() {
-        
+
     }
 
     public int getReviewId() {

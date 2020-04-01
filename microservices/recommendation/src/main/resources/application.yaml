@@ -7,6 +7,9 @@ logging:
 
 ---
 spring:
+  data:
+    mongodb:
+      host: mongodb
   profiles:
     - docker
 server:
