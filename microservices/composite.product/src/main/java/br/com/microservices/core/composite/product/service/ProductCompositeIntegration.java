@@ -71,21 +71,28 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
             return product;
 
         } catch (HttpClientErrorException ex) {
-
-            switch (ex.getStatusCode()) {
-
-                case NOT_FOUND:
-                    throw new NotFoundException(getErrorMessage(ex));
-
-                case UNPROCESSABLE_ENTITY :
-                    throw new InvalidInputException(getErrorMessage(ex));
-
-                default:
-                    LOG.warn("Got a unexpected HTTP error: {}, will rethrow it", ex.getStatusCode());
-                    LOG.warn("Error body: {}", ex.getResponseBodyAsString());
-                    throw ex;
-            }
+            throw handleHttpClientException(ex);
         }
+    }
+
+    @Override
+    public Product createProduct(Product body) {
+        try {
+            return restTemplate.postForObject(productServiceUrl, body, Product.class);
+        } catch (HttpClientErrorException e) {
+            throw handleHttpClientException(e);
+        }
+    }
+
+    @Override
+    public void deleteProduct(int productId) {
+
+        try {
+            restTemplate.delete(productServiceUrl + "/" + productId);
+        } catch (HttpClientErrorException ex) {
+            throw handleHttpClientException(ex);
+        }
+
     }
 
     private String getErrorMessage(HttpClientErrorException ex) {
@@ -113,6 +120,25 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
         }
     }
 
+    @Override
+    public void deleteRecommendations(int productId) {
+        try {
+            restTemplate.delete(recommendationServiceUrl + "/" + productId);
+        } catch (HttpClientErrorException e) {
+            throw handleHttpClientException(e);
+        }
+
+    }
+
+    @Override
+    public Recommendation createRecommendation(Recommendation body) {
+        try {
+            return restTemplate.postForObject(recommendationServiceUrl, body, Recommendation.class);
+        } catch (HttpClientErrorException e) {
+            throw handleHttpClientException(e);
+        }
+    }
+
     public List<Review> getReviews(int productId) {
 
         try {
@@ -127,6 +153,41 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
         } catch (Exception ex) {
             LOG.warn("Got an exception while requesting reviews, return zero reviews: {}", ex.getMessage());
             return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public Review createReview(Review body) {
+        try {
+            return restTemplate.postForObject(reviewServiceUrl, body, Review.class);
+        } catch (HttpClientErrorException e) {
+            throw handleHttpClientException(e);
+        }
+    }
+
+    @Override
+    public void deleteReviews(int productId) {
+        try {
+            restTemplate.delete(reviewServiceUrl + "/" + productId);
+        } catch (HttpClientErrorException e) {
+            throw handleHttpClientException(e);
+        }
+
+    }
+
+    private RuntimeException handleHttpClientException(HttpClientErrorException ex) {
+        switch (ex.getStatusCode()) {
+
+            case NOT_FOUND:
+                return new NotFoundException(getErrorMessage(ex));
+
+            case UNPROCESSABLE_ENTITY:
+                return new InvalidInputException(getErrorMessage(ex));
+
+            default:
+                LOG.warn("Got a unexpected HTTP error: {}, will rethrow it", ex.getStatusCode());
+                LOG.warn("Error body: {}", ex.getResponseBodyAsString());
+                return ex;
         }
     }
 }

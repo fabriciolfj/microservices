@@ -12,7 +12,7 @@ import java.util.List;
 public interface RecommendationMapper {
 
     @Mappings({
-            @Mapping(target = "rate", source = "entity.raing"),
+            @Mapping(target = "rate", source = "entity.rating"),
             @Mapping(target = "serviceAddress", ignore = true)
     })
     Recommendation entityToApi(RecommendationEntity entity);
@@ -22,7 +22,7 @@ public interface RecommendationMapper {
             @Mapping(target = "id", ignore = true),
             @Mapping(target = "version", ignore = true)
     })
-    RecommendationEntity apiToEntity(Recommendation recommendation);
+    RecommendationEntity apiToEntity(Recommendation api);
 
     List<Recommendation> entityListToApiList(List<RecommendationEntity> entities);
     List<RecommendationEntity> apiListToEntityList(List<Recommendation> api);

@@ -1,9 +1,9 @@
 package se.magnus.api.core.product;
 
 public class Product {
-    private final int productId;
-    private final String name;
-    private final int weight;
+    private int productId;
+    private String name;
+    private int weight;
     private String serviceAddress;
 
     public Product() {
@@ -38,5 +38,17 @@ public class Product {
 
     public void setServiceAddress(String serviceAddress) {
         this.serviceAddress = serviceAddress;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
     }
 }
