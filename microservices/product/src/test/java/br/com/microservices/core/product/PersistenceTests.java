@@ -2,7 +2,6 @@ package br.com.microservices.core.product;
 
 import br.com.microservices.core.product.persistence.ProductEntity;
 import br.com.microservices.core.product.persistence.ProductRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,20 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.OptimisticLockingFailureException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static java.util.stream.IntStream.rangeClosed;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.data.domain.Sort.Direction.ASC;
+import reactor.test.StepVerifier;
 
 @DataMongoTest
 @ExtendWith(SpringExtension.class)
@@ -36,100 +23,85 @@ public class PersistenceTests {
 
     @BeforeEach
     public void setupDb() throws Exception {
-        repository.deleteAll();
+        StepVerifier.create(repository.deleteAll()).verifyComplete();
         var entity = new ProductEntity(1, "n", 1);
-        productEntity = repository.save(entity);
-        assertEqualsProduct(entity, productEntity);
+        StepVerifier.create(repository.save(entity))
+                .expectNextMatches(createEntity -> {
+                    productEntity = createEntity;
+                    return areProductEqual(entity, productEntity);
+                })
+                .verifyComplete();
     }
 
     @Test
     public void create() {
         var newEntity = new ProductEntity(2, "n", 2);
-        productEntity = repository.save(newEntity);
 
-        var foundEntity = repository.findById(newEntity.getId()).get();
-
-        assertEqualsProduct(newEntity, foundEntity);
-        assertEquals(2, repository.count());
+        StepVerifier.create(repository.save(newEntity))
+                .expectNextMatches(createEntity -> newEntity.getProductId() == createEntity.getProductId())
+                .verifyComplete();
     }
 
     @Test
     public void update() {
         productEntity.setName("n2");
-        repository.save(productEntity);
+        StepVerifier.create(repository.save(productEntity))
+                .expectNextMatches(updateEntity -> updateEntity.getName().equals("n2"))
+                .verifyComplete();
 
-        var foundEntity = repository.findById(productEntity.getId()).get();
-        assertEquals(1, (long) foundEntity.getVersion());
-        assertEquals("n2", foundEntity.getName());
+        StepVerifier.create(repository.findById(productEntity.getId()))
+                .expectNextMatches(foundEntity -> foundEntity.getVersion() == 1 && foundEntity.getName().equals("n2"))
+                .verifyComplete();
     }
 
     @Test
     public void delete() {
-        repository.delete(productEntity);
-        assertFalse(repository.existsById(productEntity.getId()));
+        StepVerifier.create(repository.delete(productEntity)).verifyComplete();
+        StepVerifier.create(repository.existsById(productEntity.getId())).expectNext(false).verifyComplete();
+
     }
 
     @Test
     public void getByProductId() {
-        Optional<ProductEntity> entity = repository.findByProductId(productEntity.getProductId());
-        assertTrue(entity.isPresent());
-        assertEquals(productEntity, entity.get());
+        StepVerifier.create(repository.findByProductId(productEntity.getProductId()))
+                .expectNextMatches(foundEntity -> areProductEqual(productEntity, foundEntity))
+                .verifyComplete();
     }
 
     @Test
     public void duplicateError() {
         ProductEntity entity = new ProductEntity(productEntity.getProductId(), "n", 1);
-        Assertions.assertThrows(DuplicateKeyException.class, () -> repository.save(entity));
+        StepVerifier.create(repository.save(entity)).expectError(DuplicateKeyException.class).verify();
     }
 
     @Test
     public void optimisticLockError() {
-        var entity1 = repository.findById(productEntity.getId()).get();
-        var entity2 = repository.findById(productEntity.getId()).get();
+        // Store the saved entity in two separate entity objects
+        ProductEntity entity1 = repository.findById(productEntity.getId()).block();
+        ProductEntity entity2 = repository.findById(productEntity.getId()).block();
 
+        // Update the entity using the first entity object
         entity1.setName("n1");
-        repository.save(entity1);
+        repository.save(entity1).block();
 
-        try{
-            entity2.setName("n2");
-            repository.save(entity2);
-        } catch (OptimisticLockingFailureException e) {
+        //  Update the entity using the second entity object.
+        // This should fail since the second entity now holds a old version number, i.e. a Optimistic Lock Error
+        StepVerifier.create(repository.save(entity2)).expectError(OptimisticLockingFailureException.class).verify();
 
-        }
-
-        var updateEntity = repository.findById(productEntity.getId()).get();
-        assertEquals(1, updateEntity.getVersion());
-        assertEquals("n1", updateEntity.getName());
+        // Get the updated entity from the database and verify its new sate
+        StepVerifier.create(repository.findById(productEntity.getId()))
+                .expectNextMatches(foundEntity ->
+                        foundEntity.getVersion() == 1 &&
+                                foundEntity.getName().equals("n1"))
+                .verifyComplete();
     }
 
-    @Test
-    public void paging() {
-
-        repository.deleteAll();
-
-        List<ProductEntity> newProducts = rangeClosed(1001, 1010)
-                .mapToObj(i -> new ProductEntity(i, "name " + i, i))
-                .collect(Collectors.toList());
-        repository.saveAll(newProducts);
-
-        Pageable nextPage = PageRequest.of(0, 4, ASC, "productId");
-        nextPage = testNextPage(nextPage, "[1001, 1002, 1003, 1004]", true);
-        nextPage = testNextPage(nextPage, "[1005, 1006, 1007, 1008]", true);
-        nextPage = testNextPage(nextPage, "[1009, 1010]", false);
-    }
-
-    private Pageable testNextPage(Pageable nextPage, String expectedProductIds, boolean expectsNextPage) {
-        Page<ProductEntity> productPage = repository.findAll(nextPage);
-        assertEquals(expectedProductIds, productPage.getContent().stream().map(p -> p.getProductId()).collect(Collectors.toList()).toString());
-        assertEquals(expectsNextPage, productPage.hasNext());
-        return productPage.nextPageable();
-    }
-
-    private void assertEqualsProduct(ProductEntity expectedEntity, ProductEntity actualEntity) {
-        assertEquals(expectedEntity.getId(),               actualEntity.getId());
-        assertEquals(expectedEntity.getVersion(),          actualEntity.getVersion());
-        assertEquals(expectedEntity.getProductId(),        actualEntity.getProductId());
-        assertEquals(expectedEntity.getName(),           actualEntity.getName());
-        assertEquals(expectedEntity.getWeight(),           actualEntity.getWeight());
+    private boolean areProductEqual(ProductEntity expectedEntity, ProductEntity actualEntity) {
+        return
+                (expectedEntity.getId().equals(actualEntity.getId())) &&
+                        (expectedEntity.getVersion() == actualEntity.getVersion()) &&
+                        (expectedEntity.getProductId() == actualEntity.getProductId()) &&
+                        (expectedEntity.getName().equals(actualEntity.getName())) &&
+                        (expectedEntity.getWeight() == actualEntity.getWeight());
     }
 }

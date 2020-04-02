@@ -19,12 +19,22 @@ repositories {
 	maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/' }
 }
 
+ext {
+	set('springCloudVersion', "Hoxton.SR3")
+}
+
+
 dependencies {
 
 	implementation project(':api')
 	implementation project(':util')
+	implementation 'org.springframework.cloud:spring-cloud-stream'
+	implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka-streams'
+	implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation('org.springframework.cloud:spring-cloud-starter-stream-rabbit')
+	implementation('org.springframework.cloud:spring-cloud-starter-stream-kafka')
 
 	compile 'io.springfox:springfox-swagger2:3.0.0-SNAPSHOT'
 	compile 'io.springfox:springfox-swagger-ui:3.0.0-SNAPSHOT'
@@ -41,6 +51,13 @@ dependencies {
 	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.4.0'
 	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.4.0'
 	testImplementation 'io.projectreactor:reactor-test'
+	testImplementation 'org.springframework.cloud:spring-cloud-stream-test-support'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
 }
 
 test {

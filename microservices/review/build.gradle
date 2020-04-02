@@ -16,6 +16,7 @@ configurations {
 
 ext {
 	mapstructVersion = "1.3.1.Final"
+	set('springCloudVersion', "Hoxton.SR3")
 }
 
 repositories {
@@ -27,6 +28,9 @@ repositories {
 dependencies {
 	implementation project(':api')
 	implementation project(':util')
+	implementation 'org.springframework.cloud:spring-cloud-stream'
+	implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka-streams'
+	implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -49,6 +53,13 @@ dependencies {
 	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.4.0'
 	testImplementation 'io.projectreactor:reactor-test'
 	testImplementation 'com.h2database:h2'
+	testImplementation 'org.springframework.cloud:spring-cloud-stream-test-support'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
 }
 
 test {

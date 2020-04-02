@@ -27,10 +27,9 @@ class RecommendationReviewApplicationTests {
 	@Autowired
 	private RecommendationRepository repository;
 
-
 	@BeforeEach
 	public void setupDb() {
-		repository.deleteAll();
+		repository.deleteAll().block();
 	}
 
 	@Test
@@ -42,7 +41,7 @@ class RecommendationReviewApplicationTests {
 		postAndVerifyRecommendation(productId, 2, OK);
 		postAndVerifyRecommendation(productId, 3, OK);
 
-		assertEquals(3, repository.findByProductId(productId).size());
+		assertEquals(3, repository.findByProductId(productId).count().block());
 
 		getAndVerifyRecommendationsByProductId(productId, OK)
 				.jsonPath("$.length()").isEqualTo(3)
@@ -76,10 +75,10 @@ class RecommendationReviewApplicationTests {
 		int recommendationId = 1;
 
 		postAndVerifyRecommendation(productId, recommendationId, OK);
-		assertEquals(1, repository.findByProductId(productId).size());
+		assertEquals(1, repository.findByProductId(productId).count().block());
 
 		deleteAndVerifyRecommendationsByProductId(productId, OK);
-		assertEquals(0, repository.findByProductId(productId).size());
+		assertEquals(0, repository.findByProductId(productId).count().block());
 
 		deleteAndVerifyRecommendationsByProductId(productId, OK);
 	}

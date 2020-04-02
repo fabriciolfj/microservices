@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 import se.magnus.api.core.product.Product;
 import se.magnus.api.core.product.ProductService;
 import se.magnus.util.exceptions.InvalidInputException;
@@ -29,35 +30,37 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getProduct(int productId) {
+    public Mono<Product> getProduct(int productId) {
         LOG.debug("/product return the found product for productId={}", productId);
 
         if (productId < 1) throw new InvalidInputException("Invalid productId: " + productId);
 
         return repository.findByProductId(productId)
+                .switchIfEmpty(Mono.error(new NotFoundException("No product found for productId: " + productId)))
+                .log()
                 .map(prod -> {
                     var response = mapper.entityToApi(prod);
                     response.setServiceAddress(serviceUtil.getServiceAddress());
                     return response;
-                })
-                .orElseThrow(() -> new NotFoundException("No product found for productId: " + productId));
+                });
     }
 
     @Override
     public Product createProduct(Product body) {
-        try {
-            var entity = mapper.apiToEntity(body);
-            var newEntity = repository.save(entity);
-            return mapper.entityToApi(newEntity);
-        } catch (DuplicateKeyException dke) {
-            throw new InvalidInputException("Duplicate key, Product Id: " + body.getProductId());
-        }
+        var entity = mapper.apiToEntity(body);
+        return repository.save(entity)
+                .log()
+                .onErrorMap(DuplicateKeyException.class, ex -> new InvalidInputException("Duplicate key, Product Id: " + body.getProductId()))
+                .map(e -> mapper.entityToApi(e)).block();
+
     }
 
     @Override
     public void deleteProduct(int productId) {
         repository.findByProductId(productId)
-                .ifPresent(e -> repository.delete(e));
+                .log()
+                .map(e -> repository.delete(e))
+                .flatMap(e -> e).block();
 
     }
 }
