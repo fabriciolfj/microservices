@@ -11,6 +11,11 @@ server:
 
 spring.cloud.stream:
   defaultBinder: rabbit
+  binders:
+    kafka:
+      type: 'kafka'
+    rabbit:
+      type: 'rabbit'
   default.contentType: application/json
   bindings.input:
     destination: products

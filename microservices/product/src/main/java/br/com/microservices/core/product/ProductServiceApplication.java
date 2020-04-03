@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 public class ProductServiceApplication {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ProductServiceApplication.class);
-	
+
 
 	public static void main(String[] args) {
 		ConfigurableApplicationContext ctx = SpringApplication.run(ProductServiceApplication.class, args);
