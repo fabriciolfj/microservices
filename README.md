@@ -13,8 +13,8 @@ Ver mensagem:  docker-compose exec kafka /opt/kafka/bin/kafka-console-consumer.s
 
 ###### Design patterns microservices
 
-1 - Service discovery
-2 - Gateway
-3 - Configuração centralizada
-4 - Circuit breaker
-5 - Trace distribuido
+- Service discovery
+- Gateway
+- Configuração centralizada
+- Circuit breaker
+- Trace distribuido
