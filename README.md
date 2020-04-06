@@ -10,3 +10,11 @@ Ver mensagem:  docker-compose exec kafka /opt/kafka/bin/kafka-console-consumer.s
 `subindo uma imagem docker com váriavel do spring: docker run -d -p 8080:8080 -e "SPRING_PROFILES_ACTIVE=docker" --name my-prd-srv product-service`
 
 `Criando imagem docker: docker build -t fabriciojacob211/account-email:latest .`
+
+###### Design patterns microservices
+
+1 - Service discovery
+2 - Gateway
+3 - Configuração centralizada
+4 - Circuit breaker
+5 - Trace distribuido
