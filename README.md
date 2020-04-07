@@ -7,6 +7,7 @@ Ver mensagem:  docker-compose exec kafka /opt/kafka/bin/kafka-console-consumer.s
 Subindo uma imagem docker com váriavel do spring: docker run -d -p 8080:8080 -e "SPRING_PROFILES_ACTIVE=docker" --name my-prd-srv product-service`
 Criando imagem docker: docker build -t fabriciojacob211/account-email:latest .`
 Escalando um serviço pelo docker-compose: docker-compose up -d --scale nome=2;
+Ver logs de um serviço: docker-compose logs -f --tail=0 nome do serviço
 ```
 
 ###### Design patterns microservices
