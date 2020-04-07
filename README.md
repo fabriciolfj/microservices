@@ -56,7 +56,7 @@ O endpoint exposto, será protegido por um certificado, no qual  gerado pelo com
 keytool -genkeypair -alias localhost -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore edge.p12 -validity 3650
 ```
 
-###### uso jwks
+###### Uso jwks
 É um conjunto de chaves que contém as chaves públicas usadas para verificar qualquer JSON Web Token (JWT) emitido pelo servidor de autorização e assinado usando o algoritmo de assinatura RS256.
 
 ## OAuth 2.0
