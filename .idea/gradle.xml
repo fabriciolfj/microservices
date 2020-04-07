@@ -18,6 +18,9 @@
             <option value="$PROJECT_DIR$/microservices/product" />
             <option value="$PROJECT_DIR$/microservices/recommendation" />
             <option value="$PROJECT_DIR$/microservices/review" />
+            <option value="$PROJECT_DIR$/spring-cloud" />
+            <option value="$PROJECT_DIR$/spring-cloud/eureka-server" />
+            <option value="$PROJECT_DIR$/spring-cloud/gateway" />
             <option value="$PROJECT_DIR$/util" />
           </set>
         </option>

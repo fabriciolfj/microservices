@@ -27,7 +27,7 @@ import static se.magnus.api.event.Event.Type.CREATE;
 import static se.magnus.api.event.Event.Type.DELETE;
 
 
-@SpringBootTest(webEnvironment = RANDOM_PORT, properties = {"spring.data.mongodb.port: 0"})
+@SpringBootTest(webEnvironment = RANDOM_PORT, properties = {"spring.data.mongodb.port: 0", "eureka.client.enabled=false"})
 class RecommendationReviewApplicationTests {
 
 	@Autowired

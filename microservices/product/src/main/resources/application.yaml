@@ -1,6 +1,8 @@
 
 
 spring:
+  application:
+    name: product
   data:
     mongodb:
       host: localhost
@@ -11,11 +13,6 @@ server:
 
 spring.cloud.stream:
   defaultBinder: rabbit
-  binders:
-    kafka:
-      type: 'kafka'
-    rabbit:
-      type: 'rabbit'
   default.contentType: application/json
   bindings.input:
     destination: products
@@ -50,6 +47,17 @@ logging:
     root: INFO
     br.com.microservices.core.product: DEBUG
 
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    initialInstanceInfoReplicationIntervalSeconds: 5
+    registryFetchIntervalSeconds: 5
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 5
+
+
 management.endpoint.health.show-details: "ALWAYS"
 management.endpoints.web.exposure.include: "*"
 ---
@@ -65,3 +73,5 @@ server:
 spring.rabbitmq.host: rabbitmq
 
 spring.cloud.stream.kafka.binder.brokers: kafka
+
+eureka.client.serviceUrl.defaultZone: http://eureka:8761/eureka

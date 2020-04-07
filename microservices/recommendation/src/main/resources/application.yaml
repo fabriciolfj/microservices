@@ -36,6 +36,8 @@ spring.rabbitmq:
   password: guest
 
 spring:
+  application:
+    name: recommendation
   data:
     mongodb:
       host: localhost
@@ -45,6 +47,16 @@ logging:
   level:
     root: INFO
     se.magnus: DEBUG
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    initialInstanceInfoReplicationIntervalSeconds: 5
+    registryFetchIntervalSeconds: 5
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 5
 
 
 management.endpoint.health.show-details: "ALWAYS"
@@ -62,3 +74,5 @@ server:
 spring.rabbitmq.host: rabbitmq
 
 spring.cloud.stream.kafka.binder.brokers: kafka
+
+eureka.client.serviceUrl.defaultZone: http://eureka:8761/eureka
