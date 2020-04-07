@@ -44,3 +44,8 @@ Realizando uma requisição:
 curl http://localhost:8080/headerrouting -H "Host: i.feel.lucky:8080"
 
 ```
+Outra opção seria colocar o host no arquivo hosts do SO, conforme demonstrado abaixo:
+```
+sudo bash -c "echo '127.0.0.1 i.feel.lucky im.a.teapot' >> /etc/hosts"
+curl http://i.feel.lucky:8080/headerrouting
+```
