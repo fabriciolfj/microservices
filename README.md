@@ -49,3 +49,11 @@ Outra opção seria colocar o host no arquivo hosts do SO, conforme demonstrado 
 sudo bash -c "echo '127.0.0.1 i.feel.lucky im.a.teapot' >> /etc/hosts"
 curl http://i.feel.lucky:8080/headerrouting
 ```
+
+## OAuth 2.0
+Para utilizar o serviço exposto, utilizamos oauth2 como mecanimos de segurança, onde:
+
+* Resource owner: é o usuário final.
+* Client: aplicação terceira
+* Resource server: servidor que expõe as APIs que queremos proteger.
+* Authorization server: que emite o token de acesso, conforme autenticação e authorização do cliente e usuário final.
