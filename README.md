@@ -68,4 +68,4 @@ Para utilizar o serviço exposto, utilizamos oauth2 como mecanimos de segurança
 * Authorization server: que emite o token de acesso, conforme autenticação e authorização do cliente e usuário final.
 
 ## OpenID
-É um complemento ao oauth2, onde permite que aplicativos clientes verifiquem a identidade do usuários, atraveś de um token extra, um token de id.
+É um complemento ao oauth2, onde permite que aplicativos clientes verifiquem a identidade do usuários, atraveś de um token extra, um token de id. Este token de id e codificado como um Json web Token (JWT) e contém uma série de dados, como id e endereço de email do usuário. O token Id é assinado digitalmente usando assinaturas da Web Json. Isso permite que um aplicativo cliente confie nas informações no token de identificação, validando sua assinatura digital utilizando chaves púbicas do servidor de autorização.
