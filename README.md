@@ -26,3 +26,21 @@ Neste projeto usa-se o Spring cloud gateway, que será exposto aos clientes exte
 * ID: nome da rota
 Para obter uma lista completa de predicados e filtros disponíveis, consulte a documentação de referência.
 [GATEWAY](https://cloud.spring.io/spring-cloud-gateway/single/spring-cloud-gateway.html)
+
+###### Rotas com base no host
+
+Pode-se utilizar o nome do host como rota, conforme o exemplo abaixo:
+```
+  - id: host_route_200
+    uri: http://httpstat.us
+    predicates:
+      - Host=i.feel.lucky:8080
+      - Path=/headerrouting/**
+    filters:
+      - SetPath=/200
+```
+Realizando uma requisição:
+```
+curl http://localhost:8080/headerrouting -H "Host: i.feel.lucky:8080"
+
+```
