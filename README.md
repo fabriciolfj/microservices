@@ -57,7 +57,7 @@ keytool -genkeypair -alias localhost -keyalg RSA -keysize 2048 -storetype PKCS12
 ```
 
 ###### Uso jwks
-É um conjunto de chaves que contém as chaves públicas usadas para verificar qualquer JSON Web Token (JWT) emitido pelo servidor de autorização e assinado usando o algoritmo de assinatura RS256.
+É um conjunto de chaves que contém as chaves públicas usadas (podem ser usadas por servidores de recursos, para verificar tokens jwt emitidos pelo servidor de autorização) para verificar qualquer JSON Web Token (JWT) emitido pelo servidor de autorização e assinado usando o algoritmo de assinatura RS256.
 
 ## OAuth 2.0
 Para utilizar o serviço exposto, utilizamos oauth2 como mecanimos de segurança, onde:
