@@ -50,6 +50,15 @@ sudo bash -c "echo '127.0.0.1 i.feel.lucky im.a.teapot' >> /etc/hosts"
 curl http://i.feel.lucky:8080/headerrouting
 ```
 
+###### Uso https
+O endpoint exposto, será protegido por um certificado, no qual  gerado pelo comando:
+```
+keytool -genkeypair -alias localhost -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore edge.p12 -validity 3650
+```
+
+###### uso jwks
+É um conjunto de chaves que contém as chaves públicas usadas para verificar qualquer JSON Web Token (JWT) emitido pelo servidor de autorização e assinado usando o algoritmo de assinatura RS256.
+
 ## OAuth 2.0
 Para utilizar o serviço exposto, utilizamos oauth2 como mecanimos de segurança, onde:
 
