@@ -24,4 +24,4 @@ Neste projeto usa-se o Spring cloud gateway, que será exposto aos clientes exte
 * Destination URI: que descreve para onde enviar um pedido
 * ID: nome da rota
 Para obter uma lista completa de predicados e filtros disponíveis, consulte a documentação de referência.
-[GATEWAY] (https://cloud.spring.io/spring-cloud-gateway/single/spring-cloud-gateway.html)
+[GATEWAY] (https://cloud.spring.io/spring-cloud-gateway/single/)
