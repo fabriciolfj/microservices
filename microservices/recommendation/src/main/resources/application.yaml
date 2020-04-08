@@ -48,10 +48,15 @@ logging:
     root: INFO
     se.magnus: DEBUG
 
+app:
+  eureka-username: u
+  eureka-password: p
+  eureka-server: localhost
+
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: "http://${app.eureka-username}:${app.eureka-password}@${app.eureka-server}:8761/eureka/"
     initialInstanceInfoReplicationIntervalSeconds: 5
     registryFetchIntervalSeconds: 5
   instance:
@@ -76,3 +81,5 @@ spring.rabbitmq.host: rabbitmq
 spring.cloud.stream.kafka.binder.brokers: kafka
 
 eureka.client.serviceUrl.defaultZone: http://eureka:8761/eureka
+
+app.eureka-server: eureka
