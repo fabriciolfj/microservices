@@ -80,6 +80,4 @@ spring.rabbitmq.host: rabbitmq
 
 spring.cloud.stream.kafka.binder.brokers: kafka
 
-eureka.client.serviceUrl.defaultZone: http://eureka:8761/eureka
-
 app.eureka-server: eureka

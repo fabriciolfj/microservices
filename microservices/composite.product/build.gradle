@@ -36,6 +36,9 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 	implementation('org.springframework.cloud:spring-cloud-starter-stream-rabbit')
 	implementation('org.springframework.cloud:spring-cloud-starter-stream-kafka')
+	implementation('org.springframework.boot:spring-boot-starter-security')
+	implementation('org.springframework.security:spring-security-oauth2-resource-server')
+	implementation('org.springframework.security:spring-security-oauth2-jose')
 
 	compile 'io.springfox:springfox-swagger2:3.0.0-SNAPSHOT'
 	compile 'io.springfox:springfox-swagger-ui:3.0.0-SNAPSHOT'
