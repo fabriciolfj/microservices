@@ -50,6 +50,15 @@ sudo bash -c "echo '127.0.0.1 i.feel.lucky im.a.teapot' >> /etc/hosts"
 curl http://i.feel.lucky:8080/headerrouting
 ```
 
+###### Uso https
+O endpoint exposto, será protegido por um certificado, no qual  gerado pelo comando:
+```
+keytool -genkeypair -alias localhost -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore edge.p12 -validity 3650
+```
+
+###### Uso jwks
+É um conjunto de chaves que contém as chaves públicas usadas (podem ser usadas por servidores de recursos, para verificar tokens jwt emitidos pelo servidor de autorização) para verificar qualquer JSON Web Token (JWT) emitido pelo servidor de autorização e assinado usando o algoritmo de assinatura RS256.
+
 ## OAuth 2.0
 Para utilizar o serviço exposto, utilizamos oauth2 como mecanimos de segurança, onde:
 
@@ -57,3 +66,6 @@ Para utilizar o serviço exposto, utilizamos oauth2 como mecanimos de segurança
 * Client: aplicação terceira
 * Resource server: servidor que expõe as APIs que queremos proteger.
 * Authorization server: que emite o token de acesso, conforme autenticação e authorização do cliente e usuário final.
+
+## OpenID
+É um complemento ao oauth2, onde permite que aplicativos clientes verifiquem a identidade do usuários, atraveś de um token extra, um token de id. Este token de id e codificado como um Json web Token (JWT) e contém uma série de dados, como id e endereço de email do usuário. O token Id é assinado digitalmente usando assinaturas da Web Json. Isso permite que um aplicativo cliente confie nas informações no token de identificação, validando sua assinatura digital utilizando chaves púbicas do servidor de autorização.
