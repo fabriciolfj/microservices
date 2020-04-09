@@ -3,7 +3,7 @@ server:
 
 app:
   eureka-username: u
-  eureka-password: p
+  eureka-password: '{cipher}955db3415d2e43e7c56433c5122ef9c5bfbae08a779b9918ab2a23801fdb075e'
 
 eureka:
   instance:

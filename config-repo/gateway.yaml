@@ -32,7 +32,7 @@ spring.cloud.gateway.routes:
   - id: config-server
     uri: http://${app.config-server}:8888
     predicates:
-      - Path=/config/*
+      - Path=/config/**
     filters:
       - RewritePath=/config/(?<segment>.*), /$\{segment}
 
