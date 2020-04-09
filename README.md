@@ -80,3 +80,17 @@ Pegar um token para um usuario com permissão de leitura:
 ```
 curl -k https://reader:secret@localhost:8443/oauth/token -d grant_type=password -d username=fabricio -d password=password -s | jq .
 ```
+
+### Config server
+Podemos encriptar e decriptar informações sensíveis no repositório do config server (onde as configurações dos microservices estãom localizadas), através dos endpoints encrypt e decrypt. Exemplo
+```
+curl -k https://dev-usr:dev-pwd@localhost:8443/config/encrypt --data-urlencode "hello word"
+curl -k https://dev-usr:dev-pwd@localhost:8443/config/decrypt -d 287489034780982342748903274897789453384795385734uiouoi
+```
+
+Para utilizar a informações encriptada, usamos o sufixo {cipher}:
+```
+'{cipher}89389043872093482039wejhrjoewikjlshfiowuroiwuroiweuroiweuriow'
+```
+
+
