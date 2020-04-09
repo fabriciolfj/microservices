@@ -25,6 +25,8 @@ dependencies {
 	implementation 'com.sun.xml.bind:jaxb-core'
 	implementation 'com.sun.xml.bind:jaxb-impl'
 	implementation 'com.nimbusds:nimbus-jose-jwt:6.7'
+	implementation 'org.springframework.cloud:spring-cloud-starter-config'
+	implementation 'org.springframework.retry:spring-retry'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'

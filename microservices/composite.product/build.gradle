@@ -6,7 +6,7 @@ plugins {
 
 group = 'br.com.microservices.core'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '13'
+sourceCompatibility = '11'
 
 configurations {
 	compileOnly {
@@ -39,6 +39,8 @@ dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-security')
 	implementation('org.springframework.security:spring-security-oauth2-resource-server')
 	implementation('org.springframework.security:spring-security-oauth2-jose')
+	implementation 'org.springframework.cloud:spring-cloud-starter-config'
+	implementation 'org.springframework.retry:spring-retry'
 
 	compile 'io.springfox:springfox-swagger2:3.0.0-SNAPSHOT'
 	compile 'io.springfox:springfox-swagger-ui:3.0.0-SNAPSHOT'

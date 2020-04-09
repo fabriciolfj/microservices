@@ -88,8 +88,6 @@ logging:
     root: INFO
     se.magnus: DEBUG
 
-spring.application.name: product-composite
-
 app:
   eureka-username: u
   eureka-password: p

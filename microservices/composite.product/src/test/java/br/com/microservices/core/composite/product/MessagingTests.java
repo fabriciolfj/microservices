@@ -34,7 +34,7 @@ import static se.magnus.api.event.Event.Type.DELETE;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT,
         classes = {ProductCompositeServiceApplication.class, TestSecurityConfig.class },
-        properties = {"spring.data.mongodb.port: 0", "spring.main.allow-bean-definition-overriding=true","eureka.client.enabled=false"})
+        properties = {"spring.main.allow-bean-definition-overriding=true","eureka.client.enabled=false", "spring.cloud.config.enabled=false"})
 public class MessagingTests {
 
     private static final int PRODUCT_ID_OK = 1;

@@ -36,8 +36,6 @@ spring.rabbitmq:
   password: guest
 
 spring:
-  application:
-    name: recommendation
   data:
     mongodb:
       host: localhost

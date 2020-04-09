@@ -1,22 +1,20 @@
+server.port: 7003
 
+spring.jpa.hibernate.ddl-auto: update
 
-spring:
-  application:
-    name: product
-  data:
-    mongodb:
-      host: localhost
-      port: 27017
+spring.datasource:
+  url: jdbc:mysql://localhost:3306/review
+  username: root
+  password: root
 
-server:
-  port: 7001
+spring.datasource.hikari.initializationFailTimeout: 60000
 
 spring.cloud.stream:
   defaultBinder: rabbit
   default.contentType: application/json
   bindings.input:
-    destination: products
-    group: productsGroup
+    destination: reviews
+    group: reviewsGroup
 
 spring.cloud.stream.bindings.input.consumer:
   maxAttempts: 3
@@ -41,16 +39,10 @@ spring.rabbitmq:
   username: guest
   password: guest
 
-
 logging:
   level:
     root: INFO
-    br.com.microservices.core.product: DEBUG
-
-app:
-  eureka-username: u
-  eureka-password: p
-  eureka-server: localhost
+    se.magnus: DEBUG
 
 eureka:
   client:
@@ -62,16 +54,22 @@ eureka:
     leaseRenewalIntervalInSeconds: 5
     leaseExpirationDurationInSeconds: 5
 
+app:
+  eureka-username: u
+  eureka-password: p
+  eureka-server: localhost
 
 management.endpoint.health.show-details: "ALWAYS"
 management.endpoints.web.exposure.include: "*"
+
 ---
 spring:
-  data:
-    mongodb:
-      host: mongodb
   profiles:
     - docker
+
+spring.datasource:
+  url: jdbc:mysql://mysql/review-db
+
 server:
   port: 8080
 

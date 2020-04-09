@@ -1,8 +1,6 @@
 
 server.port: 9999
 
-spring.application.name: auth-server
-
 app:
   eureka-username: u
   eureka-password: p

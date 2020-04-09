@@ -107,6 +107,17 @@ services:
     depends_on:
       - kafka
 
+  config-server:
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker,native
+      - ENCRYPT_KEY=${CONFIG_SERVER_ENCRYPT_KEY}
+      - SPRING_SECURITY_USER_NAME=${CONFIG_SERVER_USR}
+      - SPRING_SECURITY_USER_PASSWORD=${CONFIG_SERVER_PWD}
+    volumes:
+      - $PWD/config-repo:/config-repo
+    build: spring-cloud/config-server
+    mem_limit: 350m
+
   # $ mongo
   mongodb:
     image: mongo:3.6.9
