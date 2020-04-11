@@ -1,20 +1,20 @@
 package br.com.microservices.core.composite.product.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.Output;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
+import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import se.magnus.api.core.product.Product;
@@ -29,10 +29,8 @@ import se.magnus.util.exceptions.NotFoundException;
 import se.magnus.util.http.HttpErrorInfo;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.net.URI;
 
-import static org.springframework.http.HttpMethod.GET;
 import static se.magnus.api.event.Event.Type.CREATE;
 import static se.magnus.api.event.Event.Type.DELETE;
 
@@ -51,6 +49,8 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
     private final String productServiceUrl = "http://product";
     private final String recommendationServiceUrl = "http://recommendation";
     private final String reviewServiceUrl = "http://review";
+
+    private final int productServiceTimeoutSec;
 
     public interface MessageSources {
 
@@ -72,15 +72,19 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
     public ProductCompositeIntegration(
             WebClient.Builder webClientBuilder,
             ObjectMapper mapper,
-            MessageSources messageSources) {
+            MessageSources messageSources,
+            @Value("${app.product-service.timeoutSec}") int productServiceTimeoutSec) {
 
         this.webClientBuilder = webClientBuilder;
         this.mapper = mapper;
         this.messageSources = messageSources;
+        this.productServiceTimeoutSec = productServiceTimeoutSec;
     }
 
-    public Mono<Product> getProduct(int productId) {
-        String url = productServiceUrl + "/product/" + productId;
+    @Retry(name = "product")
+    @CircuitBreaker(name = "product" , fallbackMethod = "getProductFallbackValue")
+    public Mono<Product> getProduct(int productId, int delay, int faultPercent) {
+        URI url = UriComponentsBuilder.fromUriString(productServiceUrl + "/product/{productId}?delay={delay}&faultPercent={faultPercent}").build(productId, delay, faultPercent);
         LOG.debug("Will call getProduct API on URL: {}", url);
 
         return getWebClient().get().uri(url)
@@ -88,6 +92,15 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
                 .bodyToMono(Product.class)
                 .log()
                 .onErrorMap(WebClientResponseException.class, ex -> handleException(ex));
+    }
+
+    private Mono<Product> getProductFallbackValue(int productId, int delay, int faultPercent, Throwable cause) {
+        LOG.warn(cause.getMessage());
+        if (productId == 13) {
+            throw new NotFoundException("Product Id: " + productId + " not found in fallback cache!");
+        }
+
+        return Mono.just(new Product(productId, "Fallback product" + productId, productId, "0.0.0.0"));
     }
 
     @Override
