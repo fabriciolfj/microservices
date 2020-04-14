@@ -99,7 +99,7 @@ Os microservices são executados em containers e estes gerenciados pelo orquestr
 * Pod - menor componente possível, que pode consistir em um ou mais contâiners.
 * Deployment - utilizado para implantar e atualizar pods, este delega a responsabilidade de criar e monitorar os pods para um replicaset.
 * Replicaset - é utilizado para garantir que um número especificado de pods, esteja sendo executado o tempo todo. Exemplo: se um pode for excluído, ele será substituido por um novo.
-* Service - é um ponto final de rede estável que você pode usar para se conectar a um ou vários pods. As solicitações enviadas a um serviço, serão encaminhadas para um dos pods disponíveis usando um load balance. Um serviço é atribuido a um up ou nome dns.
+* Service - é um ponto final de rede estável que você pode usar para se conectar a um ou vários pods. As solicitações enviadas a um serviço, serão encaminhadas para um dos pods disponíveis usando um load balance. Um serviço é atribuido a um up ou nome dns. (utilizado para comunicação externa)
 * Ingress - para gerenciar o acesso externo a serviços em um cluster kubernetes, normalmente usando http.
 * Namespace -  é usado para agrupar e, em alguns níveis, isolar recursos em um cluster kubernetes.
 * ConfigMap - é utilizado para armazenar a configuração utilizada pelos contêiners.
