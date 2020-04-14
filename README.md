@@ -120,4 +120,10 @@ Client:
 
 Em ambos podemos utilizar o kubectl.
 
+```
+kubectl get 
+kubectl describe
+kubectl logs
+```
+
 
