@@ -141,11 +141,18 @@ Para atualizar o contexto, mudando o namespace, segue o comando:
 ```
 kubectl config set-context $(kubectl config current-context) --namespace my-namespace
 ```
+Exemplo para escalar um serviço:
+```
+kubectl scale --replicas=3 rs/foo  
+```
 
 ### Minikube
 Subindo um cluster Kubernetes, utilizando o minikube:
 ```
-minikube start -p handson-spring-boot-cloud --memory=10240 --cpus=4 disk-size=30g --kubernetes-version=v1.15.0 --vm-driver=virtualbox
+minikube config set memory 10240
+minikube config set cpus 8
+minikube config set vm-driver virtualbox
+minikube start
 ```
 
 Configurar o uso do docker dentro do minikube:
