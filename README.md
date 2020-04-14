@@ -106,4 +106,18 @@ Os microservices são executados em containers e estes gerenciados pelo orquestr
 * Secret - é usado para armazenar dados confidenciais usados por contêiners.
 * DaemonSet - garanti que cada pod é executado em cada nó, em um conjunto de nódulos no cluster.
 
+### Componentes do Kubernetes
+Servidor:
+* scheduler
+* api-server
+* etcd
+* dns server
+* controller manager
+
+Client:
+* kubelet
+* kube-proxy
+
+Em ambos podemos utilizar o kubectl.
+
 
