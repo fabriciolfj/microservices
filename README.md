@@ -95,6 +95,10 @@ Para utilizar a informações encriptada, usamos o sufixo {cipher}:
 
 ### Kubernetes
 Os microservices são executados em containers e estes gerenciados pelo orquestrator kubernetes. Alguns conceitos das apis do kubernetes:
-* Node: Representa um servidor, virtual ou físico, no cluster.
+* Node - representa um servidor, virtual ou físico, no cluster.
+* Pod - menor componente possível, que pode consistir em um ou mais contâiners.
+* Deployment - utilizado para implantar e atualizar pods, este delega a responsabilidade de criar e monitorar os pods para um replicaset.
+* Replicaset - é utilizado para garantir que um número especificado de pods, esteja sendo executado o tempo todo. Exemplo: se um pode for excluído, ele será substituido por um novo.
+* Service: é um ponto final de rede estável que você pode usar para se conectar a um ou vários pods. As solicitações enviadas a um serviço, serão encaminhadas para um dos pods disponíveis usando um load balance. Um serviço é atribuido a um up ou nome dns.
 
 
