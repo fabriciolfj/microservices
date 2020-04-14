@@ -151,6 +151,20 @@ services:
     build: spring-cloud/config-server
     mem_limit: 350m
 
+  zipkin:
+    image: openzipkin/zipkin:2.12.9
+    networks:
+      - my-network
+    environment:
+      - RABBIT_ADDRESSES=rabbitmq
+      - STORAGE_TYPE=mem
+    mem_limit: 512m
+    ports:
+    - 9411:9411
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
 networks:
   my-network:
     name: my-network

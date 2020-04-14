@@ -1,0 +1,13 @@
+kubectl create namespace first-attempts
+kubectl config set-context $(kubectl config current-context) --namespace=first-attempts
+kubectl apply -f kubernetes/first-attempts/nginx-deployment.yaml
+kubectl delete pod --selector app=nginx-app
+kubectl apply -f kubernetes/first-attempts/nginx-service.yaml
+
+kubectl get svc #ver os services existentes
+kubectl run -i --rm --restart=Never curl-client --image=tutum/curl:alpine --command -- curl -s 'http://nginx-service:80'  #criando um container dentro do pod e executar um comando, usando o nome do servico em vez do ip
+kubectl delete namespace first-attempts
+kubectl config delete-context handson-spring-boot-cloud
+kubectl delete namespace nome
+kubectl delete deployment nome
+kubectl delete service nome
