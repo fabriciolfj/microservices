@@ -148,4 +148,9 @@ Subindo um cluster Kubernetes, utilizando o minikube:
 minikube start -p handson-spring-boot-cloud --memory=10240 --cpus=4 disk-size=30g --kubernetes-version=v1.15.0 --vm-driver=virtualbox
 ```
 
+### Kustomize
+É uma ferramenta usada para criar personalizações específicas do ambiente dos arquivos de definições kubernetes, ou seja, os arquivos yaml, por exemplo, para ambientes de desenvolvimento, teste e produção.
+```
+kubectl apply -K diretório/dev
+```
 
