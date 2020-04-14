@@ -93,4 +93,8 @@ Para utilizar a informações encriptada, usamos o sufixo {cipher}:
 '{cipher}89389043872093482039wejhrjoewikjlshfiowuroiwuroiweuroiweuriow'
 ```
 
+### Kubernetes
+Os microservices são executados em containers e estes gerenciados pelo orquestrator kubernetes. Alguns conceitos das apis do kubernetes:
+* Node: Representa um servidor, virtual ou físico, no cluster.
+
 
