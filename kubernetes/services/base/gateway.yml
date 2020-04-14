@@ -54,7 +54,7 @@ kind: Service
 metadata:
   name: gateway
 spec:
-  type: NodePort
+  type: NodePort #é exposto na porta 31443
   selector:
     app: gateway
   ports:

@@ -96,7 +96,7 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
 
     private Mono<Product> getProductFallbackValue(int productId, int delay, int faultPercent, Throwable cause) {
         LOG.warn(cause.getMessage());
-        if (productId == 13) {
+        if (handleException(cause) instanceof NotFoundException) {
             throw new NotFoundException("Product Id: " + productId + " not found in fallback cache!");
         }
 
@@ -172,21 +172,27 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
 
     private Throwable handleException(Throwable e) {
 
+        LOG.info("Verify exception");
         if (!(e instanceof WebClientResponseException)) {
             LOG.warn("Got a unexpected error: {}, will rethrow it", e.toString());
             return e;
         }
+
+        LOG.info("Exception WebClientResponseException");
         WebClientResponseException ex = (WebClientResponseException)e;
 
         switch (ex.getStatusCode()) {
 
             case NOT_FOUND:
+                LOG.info("Exception NotFoundException");
                 return new NotFoundException(getErrorMessage(ex));
 
             case UNPROCESSABLE_ENTITY:
+                LOG.info("Exception InvalidInputException");
                 return new InvalidInputException(getErrorMessage(ex));
 
             default:
+                LOG.info("Exception not identified");
                 LOG.warn("Got a unexpected HTTP error: {}, will rethrow it", ex.getStatusCode());
                 LOG.warn("Error body: {}", ex.getResponseBodyAsString());
                 return ex;

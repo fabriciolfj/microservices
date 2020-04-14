@@ -48,6 +48,7 @@ spec:
           failureThreshold: 3
           successThreshold: 1
 ---
+#por default e o clusterip, que não e exposto o spec.type
 apiVersion: v1
 kind: Service
 metadata:
