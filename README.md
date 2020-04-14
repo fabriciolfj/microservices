@@ -81,7 +81,7 @@ Pegar um token para um usuario com permissão de leitura:
 curl -k https://reader:secret@localhost:8443/oauth/token -d grant_type=password -d username=fabricio -d password=password -s | jq .
 ```
 
-### Config server
+## Config server
 Podemos encriptar e decriptar informações sensíveis no repositório do config server (onde as configurações dos microservices estãom localizadas), através dos endpoints encrypt e decrypt. Exemplo
 ```
 curl -k https://dev-usr:dev-pwd@localhost:8443/config/encrypt --data-urlencode "hello word"
@@ -91,6 +91,61 @@ curl -k https://dev-usr:dev-pwd@localhost:8443/config/decrypt -d 287489034780982
 Para utilizar a informações encriptada, usamos o sufixo {cipher}:
 ```
 '{cipher}89389043872093482039wejhrjoewikjlshfiowuroiwuroiweuroiweuriow'
+```
+
+## Kubernetes
+Os microservices são executados em containers e estes gerenciados pelo orquestrator kubernetes. Alguns conceitos das apis do kubernetes:
+* Node - representa um servidor, virtual ou físico, no cluster.
+* Pod - menor componente possível, que pode consistir em um ou mais contâiners.
+* Deployment - utilizado para implantar e atualizar pods, este delega a responsabilidade de criar e monitorar os pods para um replicaset.
+* Replicaset - é utilizado para garantir que um número especificado de pods, esteja sendo executado o tempo todo. Exemplo: se um pode for excluído, ele será substituido por um novo.
+* Service - é um ponto final de rede estável que você pode usar para se conectar a um ou vários pods. As solicitações enviadas a um serviço, serão encaminhadas para um dos pods disponíveis usando um load balance. Um serviço é atribuido a um up ou nome dns. (utilizado para comunicação externa)
+* Ingress - para gerenciar o acesso externo a serviços em um cluster kubernetes, normalmente usando http.
+* Namespace -  é usado para agrupar e, em alguns níveis, isolar recursos em um cluster kubernetes.
+* ConfigMap - é utilizado para armazenar a configuração utilizada pelos contêiners.
+* Secret - é usado para armazenar dados confidenciais usados por contêiners.
+* DaemonSet - garanti que cada pod é executado em cada nó, em um conjunto de nódulos no cluster.
+
+### Componentes do Kubernetes
+Servidor:
+* scheduler
+* api-server
+* etcd
+* dns server
+* controller manager
+
+Client:
+* kubelet
+* kube-proxy
+
+Em ambos podemos utilizar o kubectl.
+
+```
+kubectl get 
+kubectl describe
+kubectl logs
+```
+
+### Kubernetes contexts
+Para se trabalhar com mais de um cluster Kubernetes, usando clusters Minikube localmente ou na nuvem, kubectl vem com mo conceito de contextos. Um contexto é a combinação: cluster, autenticação do usuário e namespace.
+```
+kubectl config get-contexts
+```
+
+Para mudar de contexto para outro, segue o comando:
+```
+kubectl config use-context my-cluster
+```
+
+Para atualizar o contexto, mudando o namespace, segue o comando:
+```
+kubectl config set-context $(kubectl config current-context) --namespace my-namespace
+```
+
+### Minikube
+Subindo um cluster Kubernetes, utilizando o minikube:
+```
+minikube start -p handson-spring-boot-cloud --memory=10240 --cpus=4 disk-size=30g --kubernetes-version=v1.15.0 --vm-driver=virtualbox
 ```
 
 
