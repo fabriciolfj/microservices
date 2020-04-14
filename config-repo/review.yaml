@@ -4,8 +4,8 @@ spring.jpa.hibernate.ddl-auto: update
 
 spring.datasource:
   url: jdbc:mysql://localhost:3306/review
-  username: root
-  password: root
+  username: user
+  password: '{cipher}75693af543560b966ad75e1488f44c092c822d8326c6a9d38b76ad6a02dc3b8e'
 
 spring.datasource.hikari.initializationFailTimeout: 60000
 

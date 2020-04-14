@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: rev
-        image: hands-on/review-service
+        image: fabricio211/review
         imagePullPolicy: Never
         env:
           - name: SPRING_PROFILES_ACTIVE

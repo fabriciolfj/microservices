@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: config-server
-        image: hands-on/config-server
+        image: fabricio211/config-server
         imagePullPolicy: Never
         env:
           - name: SPRING_PROFILES_ACTIVE

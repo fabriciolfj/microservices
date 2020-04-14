@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: auth-server
-        image: hands-on/auth-server
+        image: fabricio211/auth-server
         imagePullPolicy: Never
         env:
           - name: SPRING_PROFILES_ACTIVE

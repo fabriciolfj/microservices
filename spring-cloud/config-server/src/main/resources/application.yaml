@@ -1,7 +1,7 @@
 server.port: 8888
 
 spring.profiles.active: native
-spring.cloud.config.server.native.searchLocations: file:/home/projeto/Documentos/repositorio/microservices/config-repo
+spring.cloud.config.server.native.searchLocations: file:${PWD}/config-repo
 
 # WARNING: Exposing all management endpoints over http should only be used during development, must be locked down in production!
 management.endpoint.health.show-details: "ALWAYS"

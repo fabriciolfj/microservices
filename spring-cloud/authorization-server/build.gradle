@@ -22,6 +22,7 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-starter-stream-rabbit'
 	implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
 	implementation 'org.springframework.cloud:spring-cloud-starter-zipkin'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure'
 	implementation 'javax.xml.bind:jaxb-api'
 	implementation 'com.sun.xml.bind:jaxb-core'

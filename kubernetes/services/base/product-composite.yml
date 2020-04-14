@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: comp
-        image: hands-on/product-composite-service
+        image: fabricio211/product-composite
         imagePullPolicy: Never
         env:
           - name: SPRING_PROFILES_ACTIVE

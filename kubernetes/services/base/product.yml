@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: pro
-        image: hands-on/product-service
+        image: fabricio211/product
         imagePullPolicy: Never #nunca deve baixar do registry do docker a imagem
         env:
         - name: SPRING_PROFILES_ACTIVE # vamos utilizar o profile docker

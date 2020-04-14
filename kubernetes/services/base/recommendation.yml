@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: rec
-        image: hands-on/recommendation-service
+        image: fabricio211/recommendation
         imagePullPolicy: Never
         env:
           - name: SPRING_PROFILES_ACTIVE
