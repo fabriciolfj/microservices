@@ -81,7 +81,7 @@ Pegar um token para um usuario com permissão de leitura:
 curl -k https://reader:secret@localhost:8443/oauth/token -d grant_type=password -d username=fabricio -d password=password -s | jq .
 ```
 
-### Config server
+## Config server
 Podemos encriptar e decriptar informações sensíveis no repositório do config server (onde as configurações dos microservices estãom localizadas), através dos endpoints encrypt e decrypt. Exemplo
 ```
 curl -k https://dev-usr:dev-pwd@localhost:8443/config/encrypt --data-urlencode "hello word"
@@ -93,7 +93,7 @@ Para utilizar a informações encriptada, usamos o sufixo {cipher}:
 '{cipher}89389043872093482039wejhrjoewikjlshfiowuroiwuroiweuroiweuriow'
 ```
 
-### Kubernetes
+## Kubernetes
 Os microservices são executados em containers e estes gerenciados pelo orquestrator kubernetes. Alguns conceitos das apis do kubernetes:
 * Node - representa um servidor, virtual ou físico, no cluster.
 * Pod - menor componente possível, que pode consistir em um ou mais contâiners.
