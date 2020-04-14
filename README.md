@@ -126,4 +126,22 @@ kubectl describe
 kubectl logs
 ```
 
+### Kubernetes contexts
+Para se trabalhar com mais de um cluster Kubernetes, usando clusters Minikube localmente ou na nuvem, kubectl vem com mo conceito de contextos. Um contexto é a combinação: cluster, autenticação do usuário e namespace.
+```
+kubectl config get-contexts
+```
+
+Para mudar de contexto para outro, segue o comando:
+```
+kubectl config use-context my-cluster
+```
+
+Para atualizar o contexto, mudando o namespace, segue o comando:
+```
+kubectl config set-context $(kubectl config current-context) --namespace my-namespace
+```
+
+
+
 
