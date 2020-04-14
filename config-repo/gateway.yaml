@@ -6,90 +6,27 @@ server.ssl:
   key-alias: localhost
   key-store-password: password
 
-app:
-  eureka-username: u
-  eureka-password: p
-  eureka-server: localhost
-  auth-server: localhost
+app.config-server: localhost
 
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: "http://${app.eureka-username}:${app.eureka-password}@${app.eureka-server}:8761/eureka/"
-    initialInstanceInfoReplicationIntervalSeconds: 5
-    registryFetchIntervalSeconds: 5
-  instance:
-    leaseRenewalIntervalInSeconds: 5
-    leaseExpirationDurationInSeconds: 5
-
-spring.security.oauth2.resourceserver.jwt.jwk-set-uri: http://${app.auth-server}:9999/.well-known/jwks.json
-
-ribbon.ServerListRefreshInterval: 5000
-
-ribbon.NFLoadBalancerPingInterval: 5
+spring.security.oauth2.resourceserver.jwt.jwk-set-uri: http://${app.auth-server}/.well-known/jwks.json
 
 spring.cloud.gateway.routes:
   - id: config-server
-    uri: http://${app.config-server}:8888
+    uri: http://${app.config-server}
     predicates:
       - Path=/config/**
     filters:
       - RewritePath=/config/(?<segment>.*), /$\{segment}
 
   - id: oauth-server
-    uri: lb://auth-server
+    uri: http://${app.auth-server}
     predicates:
       - Path=/oauth/**
 
   - id: product-composite
-    uri: lb://product-composite
+    uri: http://product-composite
     predicates:
       - Path=/product-composite/**
-
-  - id: eureka-api
-    uri: http://${app.eureka-server}:8761
-    predicates:
-      - Path=/eureka/api/{segment}
-    filters:
-      - SetPath=/eureka/{segment}
-
-  - id: eureka-web-start
-    uri: http://${app.eureka-server}:8761
-    predicates:
-      - Path=/eureka/web
-    filters:
-      - SetPath=/
-
-  - id: eureka-web-other
-    uri: http://${app.eureka-server}:8761
-    predicates:
-      - Path=/eureka/**
-
-  - id: host_route_200
-    uri: http://httpstat.us
-    predicates:
-      - Host=i.feel.lucky:8080
-      - Path=/headerrouting/**
-    filters:
-      - SetPath=/200
-
-  - id: host_route_418
-    uri: http://httpstat.us
-    predicates:
-      - Host=im.a.teapot:8080
-      - Path=/headerrouting/**
-    filters:
-      - SetPath=/418
-
-  - id: host_route_501
-    uri: http://httpstat.us
-    predicates:
-      - Path=/headerrouting/**
-    filters:
-      - SetPath=/501
-
-management.endpoint.health.show-details: "ALWAYS"
-management.endpoints.web.exposure.include: "*"
 
 logging:
   level:
@@ -101,6 +38,14 @@ logging:
 ---
 spring.profiles: docker
 
-app:
-  eureka-server: eureka
-  auth-server: auth-server
+app.config-server: config-server
+
+---
+spring.profiles: prod
+
+logging:
+  level:
+    root: WARN
+    org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: WARN
+    org.springframework.cloud.gateway: WARN
+    org.springframework.web.server.adapter.HttpWebHandlerAdapter: WARN

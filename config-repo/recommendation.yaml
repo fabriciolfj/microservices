@@ -29,12 +29,6 @@ spring.cloud.stream.kafka.binder:
   brokers: 127.0.0.1
   defaultBrokerPort: 9092
 
-spring.rabbitmq:
-  host: 127.0.0.1
-  port: 5672
-  username: guest
-  password: guest
-
 spring:
   data:
     mongodb:
@@ -45,25 +39,6 @@ logging:
   level:
     root: INFO
     se.magnus: DEBUG
-
-app:
-  eureka-username: u
-  eureka-password: p
-  eureka-server: localhost
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: "http://${app.eureka-username}:${app.eureka-password}@${app.eureka-server}:8761/eureka/"
-    initialInstanceInfoReplicationIntervalSeconds: 5
-    registryFetchIntervalSeconds: 5
-  instance:
-    leaseRenewalIntervalInSeconds: 5
-    leaseExpirationDurationInSeconds: 5
-
-
-management.endpoint.health.show-details: "ALWAYS"
-management.endpoints.web.exposure.include: "*"
 ---
 spring:
   data:
@@ -72,10 +47,15 @@ spring:
   profiles:
     - docker
 server:
-  port: 8080
+  port: 80
 
-spring.rabbitmq.host: rabbitmq
+---
+spring.profiles: prod
 
-spring.cloud.stream.kafka.binder.brokers: kafka
+spring.data.mongodb.host: 172.17.0.1
 
-app.eureka-server: eureka
+logging:
+  level:
+    root: WARN
+    se.magnus: WARN
+    org.springframework.data.mongodb.core.MongoTemplate: WARN

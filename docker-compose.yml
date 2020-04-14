@@ -102,16 +102,6 @@ services:
      - CONFIG_SERVER_USR=${CONFIG_SERVER_USR}
      - CONFIG_SERVER_PWD=${CONFIG_SERVER_PWD}
 
-  eureka:
-    networks:
-      - my-network
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - CONFIG_SERVER_USR=${CONFIG_SERVER_USR}
-      - CONFIG_SERVER_PWD=${CONFIG_SERVER_PWD}
-    build: spring-cloud/eureka-server
-    mem_limit: 350m
-
   gateway:
     networks:
       - my-network

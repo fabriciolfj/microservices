@@ -73,46 +73,15 @@ spring.cloud.stream:
       producer:
         required-groups: auditGroup
 
-spring.cloud.stream.kafka.binder:
-  brokers: 127.0.0.1
-  defaultBrokerPort: 9092
-
-spring.rabbitmq:
-  host: 127.0.0.1
-  port: 5672
-  username: guest
-  password: guest
-
 logging:
   level:
     root: INFO
     se.magnus: DEBUG
+    org.springframework.web.server.adapter.HttpWebHandlerAdapter: TRACE
 
 app.product-service.timeoutSec: 2
 
-app:
-  eureka-username: u
-  eureka-password: p
-  eureka-server: localhost
-  auth-server: localhost
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: "http://${app.eureka-username}:${app.eureka-password}@${app.eureka-server}:8761/eureka/"
-    initialInstanceInfoReplicationIntervalSeconds: 5
-    registryFetchIntervalSeconds: 5
-  instance:
-    leaseRenewalIntervalInSeconds: 5
-    leaseExpirationDurationInSeconds: 5
-
-spring.security.oauth2.resourceserver.jwt.jwk-set-uri: http://${app.auth-server}:9999/.well-known/jwks.json
-
-management.endpoint.health.show-details: "ALWAYS"
-management.endpoints.web.exposure.include: "*"
-
-ribbon.ServerListRefreshInterval: 5000
-ribbon.NFLoadBalancerPingInterval: 5
+spring.security.oauth2.resourceserver.jwt.jwk-set-uri: http://${app.auth-server}/.well-known/jwks.json
 
 resilience4j.circuitbreaker:
   backends:
@@ -140,12 +109,13 @@ spring:
   profiles:
     - docker
 server:
-  port: 8080
+  port: 80
 
-spring.rabbitmq.host: rabbitmq
+---
+spring.profiles: prod
 
-spring.cloud.stream.kafka.binder.brokers: kafka
-
-app:
-  eureka-server: eureka
-  auth-server: auth-server
+logging:
+  level:
+    root: WARN
+    se.magnus: WARN
+    org.springframework.web.server.adapter.HttpWebHandlerAdapter: WARN

@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product
+  template:
+    metadata:
+      labels:
+        app: product
+    spec:
+      containers:
+      - name: pro
+        image: hands-on/product-service
+        imagePullPolicy: Never #nunca deve baixar do registry do docker a imagem
+        env:
+        - name: SPRING_PROFILES_ACTIVE # vamos utilizar o profile docker
+          value: "docker"
+        envFrom:
+        - secretRef:
+            name: config-client-credentials
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: 350Mi
+        livenessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /actuator/info #endpoint que indica que o pod esta no ar
+            port: 80
+          initialDelaySeconds: 10 #tempo de espera para verificar
+          periodSeconds: 10 #tempo entre solicitações de teste enviadas pelo kubernetes
+          timeoutSeconds: 2 #tempo que o kubernetes espera por uma resposta antes de tratar o pod como falha
+          failureThreshold: 20 #quantidade de tentativas fracassadas, antes do kubernetes desistir
+          successThreshold: 1 #quantidade de tentativas bem sucedidas de teste, para considerar que o pod esta ok
+        readinessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /actuator/health #endpoint que indica se o pod esta ok
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 2
+          failureThreshold: 3
+          successThreshold: 1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product
+spec:
+  selector:
+    app: product
+  ports:
+  - port: 80
+    targetPort: 80
