@@ -164,3 +164,16 @@ eval $(minikube docker-env -u)
 kubectl apply -K diretório/dev
 ```
 
+Criando o configmap, com base nos arquivos de configuração do config-server:
+```
+kubectl create configmap config-repo --from-file=config-repo/ --save-config
+```
+
+Criando secret key para acesso ao servidor de configuração:
+```
+kubectl create secret generic config-server-secrets \
+  --from-literal=ENCRYPT_KEY=my-very-secure-encrypt-key \
+  --from-literal=SPRING_SECURITY_USER_NAME=dev-usr \
+  --from-literal=SPRING_SECURITY_USER_PASSWORD=dev-pwd \
+  --save-config
+```  
