@@ -27,9 +27,10 @@ ext {
 dependencies {
 	implementation project(':api')
 	implementation project(':util')
+	implementation('org.springframework.security:spring-security-oauth2-resource-server')
+	implementation('org.springframework.security:spring-security-oauth2-jose')
 	implementation 'org.springframework.cloud:spring-cloud-stream'
 	implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
-	implementation 'org.springframework.cloud:spring-cloud-starter-zipkin'
 	implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka-streams'
 	implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
@@ -37,9 +38,6 @@ dependencies {
 	implementation('org.springframework.cloud:spring-cloud-starter-stream-rabbit')
 	implementation('org.springframework.cloud:spring-cloud-starter-stream-kafka')
 	implementation('org.springframework.boot:spring-boot-starter-security')
-	implementation('org.springframework.security:spring-security-oauth2-resource-server')
-	implementation('org.springframework.security:spring-security-oauth2-jose')
-	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 	implementation('org.springframework.retry:spring-retry')
 	implementation("io.github.resilience4j:resilience4j-spring-boot2:${resilience4jVersion}")
 	implementation("io.github.resilience4j:resilience4j-reactor:${resilience4jVersion}")

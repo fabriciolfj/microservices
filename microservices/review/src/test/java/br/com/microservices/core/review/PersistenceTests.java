@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 
-@DataJpaTest(properties = {"spring.cloud.config.enabled=false"})
+@DataJpaTest
 @ExtendWith(SpringExtension.class)
 @Transactional(propagation = NOT_SUPPORTED)
 public class PersistenceTests {

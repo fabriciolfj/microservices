@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: recommendation
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: recommendation
@@ -13,40 +13,51 @@ spec:
         app: recommendation
     spec:
       containers:
-      - name: rec
-        image: fabricio211/recommendation
-        imagePullPolicy: Never
-        env:
+        - name: rec
+          image: fabricio211/recommendation
+          imagePullPolicy: Never
+          env:
           - name: SPRING_PROFILES_ACTIVE
             value: "docker"
-        envFrom:
+          - name: SPRING_CONFIG_LOCATION
+            value: file:/config-repo/application.yml,file:/config-repo/recommendation.yml
+          envFrom:
           - secretRef:
-              name: config-client-credentials
-        ports:
-        - containerPort: 80
-        resources:
-          limits:
-            memory: 350Mi
-        livenessProbe:
-          httpGet:
-            scheme: HTTP
-            path: /actuator/info
-            port: 80
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          timeoutSeconds: 2
-          failureThreshold: 20
-          successThreshold: 1
-        readinessProbe:
-          httpGet:
-            scheme: HTTP
-            path: /actuator/health
-            port: 80
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          timeoutSeconds: 2
-          failureThreshold: 3
-          successThreshold: 1
+              name: rabbitmq-credentials
+          - secretRef:
+              name: mongodb-credentials
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              memory: 350Mi
+          livenessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /actuator/info
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 20
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /actuator/health
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
+            successThreshold: 1
+          volumeMounts:
+            - name: config-repo-volume
+              mountPath: /config-repo
+      volumes:
+        - name: config-repo-volume
+          configMap:
+            name: config-repo-recommendation
 ---
 apiVersion: v1
 kind: Service

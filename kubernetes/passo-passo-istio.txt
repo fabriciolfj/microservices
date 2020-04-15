@@ -1,0 +1,9 @@
+curl -L https://git.io/getLatestIstio | ISTIO_VERSION=1.2.4 sh -
+
+for i in istio-1.2.4/install/kubernetes/helm/istio-init/files/crd*yaml; do kubectl apply -f $i; done
+
+kubectl apply -f istio-1.2.4/install/kubernetes/istio-demo.yaml
+
+kubectl -n istio-system wait --timeout=600s --for=condition=available deployment --all"
+
+kubectl -n istio-system apply -f kubernetes/istio/setup/kiali-configmap.yml && kubectl -n istio-system delete pod -l app=kiali && kubectl -n istio-system wait --timeout=60s --for=condition=ready pod -l app=kiali

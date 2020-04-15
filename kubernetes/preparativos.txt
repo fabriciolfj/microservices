@@ -1,0 +1,11 @@
+sudo bash -c "echo $(minikube ip) minikube.me | tee -a /etc/hosts"
+
+openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 -keyout kubernetes/cert/tls.key -out kubernetes/cert/tls.crt -subj "/CN=minikube.me/O=minikube.me"
+
+kubectl create namespace hands-on
+
+kubectl config set-context $(kubectl config current-context) --namespace=hands-on
+
+kubectl apply -k kubernetes/services/overlays/dev
+
+curl -k https://writer:secret@minikube.me:443/oauth/token -d grant_type=password -d username=fabricio -d password=password -s | jq .access_token -r

@@ -1,9 +1,7 @@
 resources:
-- auth-server.yml
-- config-server.yml
-- gateway.yml
-- product-composite.yml
-- product.yml
-- recommendation.yml
-- review.yml
-- zipkin-server.yml
+  - auth-server.yml
+  - product-composite.yml
+  - product.yml
+  - recommendation.yml
+  - review.yml
+  - ingress-edge-server.yml

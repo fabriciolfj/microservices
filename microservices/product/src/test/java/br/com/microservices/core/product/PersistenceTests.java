@@ -12,7 +12,7 @@ import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.test.StepVerifier;
 
-@DataMongoTest(properties = {"spring.cloud.config.enabled=false"})
+@DataMongoTest
 @ExtendWith(SpringExtension.class)
 public class PersistenceTests {
 

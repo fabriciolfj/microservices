@@ -9,3 +9,4 @@ kubectl create secret generic config-server-secrets --from-literal=ENCRYPT_KEY=m
 kubectl create secret generic config-client-credentials --from-literal=CONFIG_SERVER_USR=dev-usr --from-literal=CONFIG_SERVER_PWD=dev-pwd --save-config
 
 kubectl apply -k kubernetes/services/overlays/dev
+
