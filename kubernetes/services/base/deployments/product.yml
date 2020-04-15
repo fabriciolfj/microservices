@@ -1,26 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: recommendation
+  name: product
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: recommendation
+      app: product
   template:
     metadata:
       labels:
-        app: recommendation
+        app: product
+        version: latest
     spec:
       containers:
-        - name: rec
-          image: fabricio211/recommendation
+        - name: pro
+          image: fabricio211/product
           imagePullPolicy: Never
           env:
           - name: SPRING_PROFILES_ACTIVE
             value: "docker"
           - name: SPRING_CONFIG_LOCATION
-            value: file:/config-repo/application.yml,file:/config-repo/recommendation.yml
+            value: file:/config-repo/application.yml,file:/config-repo/product.yml
           envFrom:
           - secretRef:
               name: rabbitmq-credentials
@@ -57,15 +58,4 @@ spec:
       volumes:
         - name: config-repo-volume
           configMap:
-            name: config-repo-recommendation
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: recommendation
-spec:
-  selector:
-    app: recommendation
-  ports:
-    - port: 80
-      targetPort: 80
+            name: config-repo-product

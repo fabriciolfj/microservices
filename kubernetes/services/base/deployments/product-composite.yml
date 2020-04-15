@@ -11,6 +11,7 @@ spec:
     metadata:
       labels:
         app: product-composite
+        version: latest
     spec:
       containers:
         - name: comp
@@ -33,7 +34,7 @@ spec:
             httpGet:
               scheme: HTTP
               path: /actuator/info
-              port: 80
+              port: 4004
             initialDelaySeconds: 10
             periodSeconds: 10
             timeoutSeconds: 2
@@ -43,7 +44,7 @@ spec:
             httpGet:
               scheme: HTTP
               path: /actuator/health
-              port: 80
+              port: 4004
             initialDelaySeconds: 10
             periodSeconds: 10
             timeoutSeconds: 2
@@ -56,14 +57,3 @@ spec:
         - name: config-repo-volume
           configMap:
             name: config-repo-product-composite
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: product-composite
-spec:
-  selector:
-    app: product-composite
-  ports:
-    - port: 80
-      targetPort: 80

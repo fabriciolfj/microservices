@@ -4,6 +4,21 @@ for i in istio-1.2.4/install/kubernetes/helm/istio-init/files/crd*yaml; do kubec
 
 kubectl apply -f istio-1.2.4/install/kubernetes/istio-demo.yaml
 
-kubectl -n istio-system wait --timeout=600s --for=condition=available deployment --all"
+kubectl -n istio-system wait --timeout=600s --for=condition=available deployment --all
 
 kubectl -n istio-system apply -f kubernetes/istio/setup/kiali-configmap.yml && kubectl -n istio-system delete pod -l app=kiali && kubectl -n istio-system wait --timeout=60s --for=condition=ready pod -l app=kiali
+
+Para acessar os servicos, deve-se utilizar este padrão: {service-name}.{namespace}.svc.cluster.local
+
+minikube tunnel (deixar os serviços do kubernetes acessiveis do host)
+
+Pegar o ip do istio gateway e colocar em uma variável de ambiente:
+INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+Atualizando o hosts
+echo "$INGRESS_HOST minikube.me" | sudo tee -a /etc/hosts
+
+Verificar se o grafana, kiali e o jaeger poder ser alcançados através do túnel.
+curl -o /dev/null -s -L -w "%{http_code}" http://kiali.istio-system.svc.cluster.local:20001/kiali/
+curl -o /dev/null -s -L -w "%{http_code}" http://grafana.istio-system.svc.cluster.local:3000
+curl -o /dev/null -s -L -w "%{http_code}" http://jaeger-query.istio-system.svc.cluster.local:16686

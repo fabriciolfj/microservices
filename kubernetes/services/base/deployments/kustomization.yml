@@ -4,4 +4,3 @@ resources:
   - product.yml
   - recommendation.yml
   - review.yml
-  - ingress-edge-server.yml

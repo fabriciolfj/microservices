@@ -1,31 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: review
+  name: recommendation
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: review
+      app: recommendation
   template:
     metadata:
       labels:
-        app: review
+        app: recommendation
+        version: latest
     spec:
       containers:
-        - name: rev
-          image: fabricio211/review
+        - name: rec
+          image: fabricio211/recommendation
           imagePullPolicy: Never
           env:
           - name: SPRING_PROFILES_ACTIVE
             value: "docker"
           - name: SPRING_CONFIG_LOCATION
-            value: file:/config-repo/application.yml,file:/config-repo/review.yml
+            value: file:/config-repo/application.yml,file:/config-repo/recommendation.yml
           envFrom:
           - secretRef:
               name: rabbitmq-credentials
           - secretRef:
-              name: mysql-credentials
+              name: mongodb-credentials
           ports:
             - containerPort: 80
           resources:
@@ -57,15 +58,4 @@ spec:
       volumes:
         - name: config-repo-volume
           configMap:
-            name: config-repo-review
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: review
-spec:
-  selector:
-    app: review
-  ports:
-    - port: 80
-      targetPort: 80
+            name: config-repo-recommendation
