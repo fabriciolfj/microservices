@@ -38,7 +38,7 @@ else
 fi
 
 kubectl create configmap config-repo-auth-server       --from-file=config-repo/application.yml --from-file=config-repo/auth-server.yml --save-config
-kubectl create configmap config-repo-gateway           --from-file=config-repo/application.yml --from-file=config-repo/gateway.yml --save-config
+#kubectl create configmap config-repo-gateway           --from-file=config-repo/application.yml --from-file=config-repo/gateway.yml --save-config
 kubectl create configmap config-repo-product-composite --from-file=config-repo/application.yml --from-file=config-repo/product-composite.yml --save-config
 kubectl create configmap config-repo-product           --from-file=config-repo/application.yml --from-file=config-repo/product.yml --save-config
 kubectl create configmap config-repo-recommendation    --from-file=config-repo/application.yml --from-file=config-repo/recommendation.yml --save-config
@@ -95,3 +95,5 @@ kubectl get deployment auth-server product product-composite recommendation revi
 waitForPods 5 'version=latest'
 
 kubectl wait --timeout=120s --for=condition=Ready pod --all
+
+kubectl delete -f kubernetes/services/base/istio/jwt-authentication-policy.yml
