@@ -1,0 +1,16 @@
+kubectl create namespace logging
+
+eval $(minikube docker-env)
+
+docker pull docker.elastic.co/elasticsearch/elasticsearch-oss:7.3.0
+docker pull docker.elastic.co/kibana/kibana-oss:7.3.0
+
+kubectl apply -f kubernetes/efk/elasticsearch.yml -n logging
+kubectl wait --timeout=120s --for=condition=Ready pod -n logging --all
+
+curl http://elasticsearch.logging.svc.cluster.local:9200 -s | jq -r .tagline
+
+kubectl apply -f kubernetes/efk/kibana.yml -n logging
+kubectl wait --timeout=120s --for=condition=Read pod -n logging --all
+
+curl -o /dev/null -s -L -w "%{http_code}\n" http://kibana.logging.svc.cluster.local:5601
