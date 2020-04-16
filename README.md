@@ -184,3 +184,10 @@ kubectl create secret generic config-server-secrets \
   --from-literal=SPRING_SECURITY_USER_PASSWORD=dev-pwd \
   --save-config
 ```  
+
+## EFK
+Na branch kubernetes_istio_efk, utilizamos o pattern microservice log centralizado, utilizando a ferramenta efk:
+* Elastisearch: para armazenamento dos logs
+* Fluentd: para coletar os logs
+* Kibana: dashboard para manipular e visualizar os logs.
+obs: Utilizamos dentro do ambiente kubernetes.
