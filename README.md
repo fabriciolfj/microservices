@@ -10,6 +10,7 @@ Escalando um serviço pelo docker-compose: docker-compose up -d --scale nome=2;
 Ver logs de um serviço: docker-compose logs -f --tail=0 nome do serviço
 ```
 
+
 ###### Design patterns microservices
 
 - Service discovery
